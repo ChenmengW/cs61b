@@ -80,8 +80,25 @@ public class IntList {
      */
 
     public static IntList dcatenate(IntList A, IntList B) {
-        //TODO:  fill in method
-        return null;
+        if (A == null) {
+            return B;
+        }
+        else if (B == null) {
+            return A;
+        }
+        else {
+//            Iterative Version
+            IntList ptr = A;
+            while (ptr.tail != null) {
+                ptr = ptr.tail;
+            }
+            ptr.tail = B;
+
+//            Recursive Version
+//            A.tail = dcatenate(A.tail, B);
+
+            return A;
+        }
     }
 
     /**
@@ -89,8 +106,19 @@ public class IntList {
      * * elements of B.  May NOT modify items of A.  Use 'new'.
      */
     public static IntList catenate(IntList A, IntList B) {
-        //TODO:  fill in method
-        return null;
+        if (A == null) {
+            return B;
+        }
+        else if (B == null) {
+            return A;
+        }
+        else {
+            IntList C = new IntList();
+            C.head = A.head;
+            C.tail = catenate(A.tail, B);
+            return C;
+        }
+
     }
 
 
@@ -210,6 +238,12 @@ public class IntList {
         }
         out.format(")");
         return out.toString();
+    }
+
+    public static void main(String[] args) {
+        IntList A = IntList.list(1, 2, 3);
+        IntList B = IntList.list(4, 5, 6);
+        System.out.println(dcatenate(A, B));
     }
 }
 
