@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by varad on 7/13/16.
  */
@@ -10,6 +13,9 @@ public class Planet {
     public double mass;
     public String imgFileName;
 
+    /** EXTRA : TRACING LOCUS OF PLANETS */
+//    public List<Double> xList = new ArrayList<Double>();
+//    public List<Double> yList = new ArrayList<Double>();
 
     public Planet(Planet p) {
         this.xxPos = p.xxPos;
@@ -28,6 +34,10 @@ public class Planet {
         this.yyVel = yV;
         this.mass = m;
         this.imgFileName = img;
+
+        /** EXTRA : TRACING LOCUS OF PLANETS */
+//        this.xList.add(this.xxPos);
+//        this.yList.add(this.yyPos);
     }
 
     public double calcDistance(Planet p) {
@@ -95,6 +105,24 @@ public class Planet {
 
         this.xxPos = this.xxPos + (this.xxVel * dt);
         this.yyPos = this.yyPos + (this.yyVel * dt);
+
+        /** EXTRA : TRACING LOCUS OF PLANETS
+
+          * 1. Blindly tracking every point. Completely dumb way
+          *    to go about things. */
+//        this.xList.add(this.xxPos);
+//        this.yList.add(this.yyPos);
+
+        /** 2. This seemed like a good idea at first, but it
+          *    creates issues because some orbit points are
+          *    repeated in weird loops. */
+
+//        if (!xList.contains(this.xxPos)) {
+//            this.xList.add(this.xxPos);
+//        }
+//        if (!yList.contains(this.yyPos)) {
+//            this.yList.add(this.yyPos);
+//        }
     }
 
     public void draw() {

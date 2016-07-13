@@ -1,3 +1,5 @@
+import java.awt.*;
+
 /**
  * Created by varad on 7/13/16.
  */
@@ -67,6 +69,19 @@ public class NBody {
             }
 
             StdDraw.picture(0, 0, "./images/starfield.jpg");
+
+            /** EXTRA : TRACING LOCUS OF PLANETS */
+//            StdDraw.setPenColor(Color.YELLOW);
+//            for (Planet p : planets) {
+//                if (p.xList.size() > 1) {
+//                    for (int i = 0; i < p.xList.size() - 1; i++) {
+//                        StdDraw.line(p.xList.get(i), p.yList.get(i),
+//                                     p.xList.get(i+1), p.yList.get(i+1));
+//                    }
+//                }
+//            }
+
+
             for (Planet p : planets) {
                 p.draw();
             }
