@@ -91,9 +91,26 @@ public class LinkedListDequeTest {
 
 	}
 
+	public static void getTest() {
+
+        System.out.println("Running get test.");
+
+        LinkedListDeque<Integer> lld1 = new LinkedListDeque<Integer>();
+		// should be empty
+		boolean passed = checkEmpty(true, lld1.isEmpty());
+
+        for (int i = 0; i < 10; i++) {
+            lld1.addLast(i);
+        }
+
+        passed = checkSize(5, lld1.getRecursive(5)) && passed;
+        printTestStatus(passed);
+    }
+
 	public static void main(String[] args) {
 		System.out.println("Running tests.\n");
 		addIsEmptySizeTest();
 		addRemoveTest();
+        getTest();
 	}
 } 

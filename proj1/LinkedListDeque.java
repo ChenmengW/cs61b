@@ -82,15 +82,21 @@ public class LinkedListDeque<Item> {
         return p.item;
     }
 
-//    private Item recursiveHelper()
+    private Item recursiveHelper(int index, Node x) {
+        if (index == 0) {
+            return x.item;
+        }
 
-//    public Item getRecursive(int index) {
-//        if (index >= this.size) {
-//            return null;
-//        }
-//
-//
-//    }
+        return recursiveHelper(index - 1, x.next);
+    }
+
+    public Item getRecursive(int index) {
+        if (index >= this.size) {
+            return null;
+        }
+
+        return recursiveHelper(index, this.sentinel.next);
+    }
 
     public Item removeFirst() {
         if (this.isEmpty()) {
