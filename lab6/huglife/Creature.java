@@ -43,7 +43,7 @@ public abstract class Creature extends Occupant {
         return energy;
     }
 
-    /** Utility method that converts a Map<Direction, String> N to a list of all
+    /** Utility method that converts a Map<Direction, Occupation> N to a list of all
         neighbors of the specified TYPE. For example, if the map contains:
         UP -> "sample", DOWN -> "empty", LEFT -> "empty", RIGHT -> "impassible"
         and type is "empty", it will return a list containing Direction.DOWN and
