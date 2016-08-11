@@ -8,11 +8,26 @@ import java.util.ArrayList;
 public class ArrayHeap<T> {
 	private ArrayList<Node> contents = new ArrayList<Node>();
 
+    public ArrayHeap() {
+        Node zeroNode = new Node(null, Double.NEGATIVE_INFINITY);   // not to bother about 0th entry
+        this.setNode(0, zeroNode);
+//        this.contents.add(zeroNode);
+    }
+
 	/**
 	 * Inserts an item with the given priority value. This is enqueue, or offer.
 	 */
 	public void insert(T item, double priority) {
+        Node nodeToAdd = new Node(item, priority);
+        int indexToAdd = this.contents.size();
 
+        // Always inserted at the end of the list. Index : size()
+        this.setNode(indexToAdd, nodeToAdd);
+        bubbleUp(indexToAdd);
+
+        // Better to use size() rather than indexOf() because whatever the
+        // underlying implementation, indexOf will be O(N), but size O(1)
+        // bubbleUp(contents.indexOf(toAdd));
 	}
 
 	/**
@@ -20,8 +35,15 @@ public class ArrayHeap<T> {
 	 * from the heap.
 	 */
 	public Node peek() {
-		// TODO Complete this method!
-		return null;
+
+        return this.getNode(1);// least priority element will always be @ index 1
+
+        // v1.0 : w/o using get/setNode methods
+//        if (this.contents.size() < 2) {
+//            return null;
+//        }
+//
+//		return this.contents.get(1);    // least priority element will always be @ index 1
 	}
 
 	/**
@@ -29,8 +51,15 @@ public class ArrayHeap<T> {
 	 * the heap. This is dequeue, or poll.
 	 */
 	public Node removeMin() {
-		// TODO Complete this method!
-		return null;
+        // v1.0 : w/o using get/setNode methods
+		int indexLast = this.contents.size() - 1;
+
+        swap(1, indexLast);     // swap min and bottom right-most
+
+        Node nodeToReturn = this.contents.remove(indexLast);    // pain to use get
+        bubbleDown(1);
+
+        return nodeToReturn;
 	}
 
 	/**
@@ -39,7 +68,28 @@ public class ArrayHeap<T> {
 	 * nodes with the same item. Check for item equality with .equals(), not ==
 	 */
 	public void changePriority(T item, double priority) {
-		// TODO Complete this method!
+        // v1.0 : w/o using get/setNode methods
+        for (Node node: this.contents) {
+            if (node.item().equals(item)) {
+                double oldPriority = node.priority();
+                if (oldPriority == priority) {
+                    return;
+                }
+
+                int nodeIndex = this.contents.indexOf(node);
+
+                // No method to set priority explicitly in Node,
+                // so put in a new Node
+                Node newNode = new Node(item, priority);
+                this.setNode(nodeIndex, newNode);
+
+                if (oldPriority < priority) {
+                    bubbleUp(nodeIndex);
+                } else {
+                    bubbleDown(nodeIndex);
+                }
+            }
+        }
 	}
 
 	/**
@@ -82,7 +132,7 @@ public class ArrayHeap<T> {
 	private void setNode(int index, Node n) {
 		// In the case that the ArrayList is not big enough
 		// add null elements until it is the right size
-		while (index + 1 >= contents.size()) {
+		while (index + 1 > contents.size()) {      // why >= ? adds 2 places, edited to make >
 			contents.add(null);
 		}
 		contents.set(index, n);
@@ -102,52 +152,72 @@ public class ArrayHeap<T> {
 	 * Returns the index of the node to the left of the node at i.
 	 */
 	private int getLeftOf(int i) {
-		// TODO Complete this method!
-		return 0;
+		return 2*i;
 	}
 
 	/**
 	 * Returns the index of the node to the right of the node at i.
 	 */
 	private int getRightOf(int i) {
-		// TODO Complete this method!
-		return 0;
+		return 2*i + 1;
 	}
 
 	/**
 	 * Returns the index of the node that is the parent of the node at i.
 	 */
 	private int getParentOf(int i) {
-		// TODO Complete this method!
-		return 0;
+		int parentIndex = (int) i / 2;  // redundant cast, but for clarity
+		return parentIndex;
 	}
 
 	/**
 	 * Adds the given node as a left child of the node at the given index.
 	 */
 	private void setLeft(int index, Node n) {
-		// TODO Complete this method!
+        int leftChildIndex = this.getLeftOf(index);
+		this.setNode(leftChildIndex, n);
 	}
 
 	/**
 	 * Adds the given node as the right child of the node at the given index.
 	 */
-	private void setRight(int inde, Node n) {
-		// TODO Complete this method!
+	private void setRight(int index, Node n) {
+        int rightChildIndex = this.getLeftOf(index);
+        this.setNode(rightChildIndex, n);
 	}
 
 	/**
 	 * Bubbles up the node currently at the given index.
 	 */
 	private void bubbleUp(int index) {
-		// TODO Complete this method!
+		int parentIndex = this.getParentOf(index);
+
+        while (parentIndex != this.min(parentIndex, index)) {
+            swap(parentIndex, index);
+            index = parentIndex;
+            parentIndex = this.getParentOf(index);
+        }
 	}
 
 	/**
 	 * Bubbles down the node currently at the given index.
 	 */
-	private void bubbleDown(int inex) {
-		// TODO Complete this method!
+	private void bubbleDown(int index) {
+		int leftChildIndex = this.getLeftOf(index);
+        int rightChildIndex = this.getRightOf(index);
+        int childToSwapIndex = this.min(leftChildIndex, rightChildIndex);
+
+        while (childToSwapIndex < this.contents.size() &&
+                childToSwapIndex == this.min(index, childToSwapIndex)) {
+
+            swap(index, childToSwapIndex);
+            index = childToSwapIndex;
+
+            // repetitive but will change that later
+            leftChildIndex = this.getLeftOf(index);
+            rightChildIndex = this.getRightOf(index);
+            childToSwapIndex = this.min(leftChildIndex, rightChildIndex);
+        }
 	}
 
 	/**
@@ -204,6 +274,7 @@ public class ArrayHeap<T> {
 		heap.insert("c", 3);
 		heap.insert("d", 4);
 		System.out.println(heap);
+//        System.out.println(heap.contents.toString());
 	}
 
 }

@@ -31,6 +31,7 @@ public class TestArrayHeap {
 		sortedItems.add(heap.removeMin().priority());
 		sortedItems.add(heap.removeMin().priority());
 
+		System.out.println(sortedItems.toString());
 		assertIsSorted("Failed heap test given to you in the main method.", sortedItems);
 	}
 
