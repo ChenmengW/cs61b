@@ -21,6 +21,10 @@ public class TestComplexOomage {
         }
     }
 
+    private int bucketHash(int hashCode, int M) {
+        return (hashCode & 0x7fffffff) % M;
+    }
+
     public boolean haveNiceHashCodeSpread(Set<ComplexOomage> oomages) {
         /* TODO: Write a utility function that ensures that the oomages have
          * hashCodes that would distribute them fairly evenly across
@@ -28,7 +32,29 @@ public class TestComplexOomage {
          * and ensure that no bucket has fewer than N / 50
          * Oomages and no bucket has more than N / 2.5 Oomages.
          */
-        return false;
+
+        boolean hashCodeSpread = true;
+        int N = oomages.size();
+        int M = 10;
+
+        int[] bucketCount = new int[M];
+
+        for (ComplexOomage c: oomages) {
+            int hashCode = c.hashCode();
+            int bucketNumber = this.bucketHash(hashCode, M);
+            bucketCount[bucketNumber] += 1;
+        }
+
+        for (int i = 0; i < M; i++) {
+            if (hashCodeSpread) {
+                hashCodeSpread = hashCodeSpread && (bucketCount[i] > (N / 50))
+                                                && (bucketCount[i] < (2 * N / 5));
+            } else {
+                break;
+            }
+        }
+
+        return hashCodeSpread;
     }
 
 
@@ -49,6 +75,23 @@ public class TestComplexOomage {
         /* TODO: Create a Set that shows the flaw in the hashCode function.
          */
         HashSet<ComplexOomage> oomages = new HashSet<ComplexOomage>();
+
+        int N = 10000;
+        int lastDigit = 4;
+
+        for (int i = 0; i < N; i += 1) {
+            int X = StdRandom.uniform(1, N);
+            List<Integer> params = new ArrayList<Integer>(X);
+
+            for (int j = 0; j < X; j++) {
+                int Y = StdRandom.uniform(0, 255);
+                params.add(Y);
+            }
+
+            params.add(lastDigit);
+            ComplexOomage oomage = new ComplexOomage(params);
+            oomages.add(oomage);
+        }
 
         assertTrue(haveNiceHashCodeSpread(oomages));
     }

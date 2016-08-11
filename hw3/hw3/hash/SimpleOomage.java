@@ -10,23 +10,62 @@ public class SimpleOomage implements Oomage {
     protected int blue;
 
     private static final double WIDTH = 0.01;
-    private static final boolean USE_PERFECT_HASH = false;
+    private static final boolean USE_PERFECT_HASH = true;
 
-    /*
+
     @Override
     public boolean equals(Object o) {
-        // TODO: Uncomment this method and make it correct.
-    }*/
 
-    /*@Override
+        if (o == null) {
+            return false;
+        }
+
+        if (o.getClass() != this.getClass()) {
+            return false;
+        }
+
+        if (this.red == ((SimpleOomage) o).red &&
+                this.green == ((SimpleOomage) o).green &&
+                    this.blue == ((SimpleOomage) o).blue) {
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private int numDigits(int num) {
+
+        if (num == 0) {
+            return 1;
+        }
+
+        int n = 0;
+
+        while (num != 0) {
+            n += 1;
+            num = num /10;
+        }
+
+        return n;
+    }
+
+    @Override
     public int hashCode() {
         if (!USE_PERFECT_HASH) {
             return red + green + blue;
         } else {
             // TODO: Replace with a "perfect" hashing function.
-            return 0;
+            int greenMultiplier = this.numDigits(this.blue);
+            int redMultiplier = this.numDigits(this.green) + greenMultiplier;
+
+            greenMultiplier = (int) Math.pow(10, greenMultiplier);
+            redMultiplier = (int) Math.pow(10, redMultiplier);
+
+            int hash = (this.red * redMultiplier) + (this.green * greenMultiplier) + this.blue;
+            return hash;
         }
-    }*/
+    }
 
     public SimpleOomage(int r, int g, int b) {
         if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {

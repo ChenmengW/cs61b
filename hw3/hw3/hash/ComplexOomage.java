@@ -12,9 +12,9 @@ public class ComplexOomage implements Oomage {
 
     @Override
     public int hashCode() {
-        int total = 0;
+        int total = 0;              // for good spread, change to 1
         for (int x : params) {
-            total = total * 256;
+            total = total * 256;    // for good spread change to 255 or lowest prime below 255
             total = total + x;
         }
         return total;
